@@ -1,0 +1,40 @@
+<div class="container py-4" style="max-width: 560px;">
+  
+  <div class="card border-primary border-opacity-25 shadow-sm" style="border-radius: 0.75rem;">
+    <h1 class="m-4 fs-4 fw-semibold text-primary-emphasis mb-0">Crear curso</h1>
+    <div class="card-body px-4 py-4">
+
+      <div class="mb-3">
+        <label class="form-label fw-medium text-primary-emphasis" style="font-size: 0.875rem;">Nombre de la materia</label>
+        <input type="text" class="form-control" placeholder="Ej. Cálculo Diferencial">
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label fw-medium text-primary-emphasis" style="font-size: 0.875rem;">Docente</label>
+        <input type="text" class="form-control" placeholder="Ej. Dr. Ramírez">
+      </div>
+
+      <!-- Salón y cupos -->
+      <div class="row g-3 mb-3">
+        <div class="col-6">
+          <label class="form-label fw-medium text-primary-emphasis" style="font-size: 0.875rem;">Salón</label>
+          <input type="text" class="form-control" placeholder="Ej. Aula 204">
+        </div>
+        <div class="col-6">
+          <label class="form-label fw-medium text-primary-emphasis" style="font-size: 0.875rem;">Cupos disponibles</label>
+          <input type="number" class="form-control" placeholder="Ej. 30" min="1">
+        </div>
+      </div>
+
+      <!-- Cancelar y Crear curos-->
+      <div class="d-flex justify-content-end gap-2">
+        <button type="button" class="btn btn-outline-danger btn-sm px-4" data-bs-dismiss="modal">Cancelar</button>
+        <button type="submit" class="btn btn-primary btn-sm px-4">
+          <i class="fa-solid fa-plus me-1"></i> Crear curso
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+</div>
