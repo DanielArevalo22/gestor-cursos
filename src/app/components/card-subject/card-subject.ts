@@ -1,4 +1,5 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
+import Course from '../../models/Course';
 
 @Component({
   selector: 'app-card-subject',
@@ -8,6 +9,7 @@ import { Component, EventEmitter, Output } from '@angular/core';
   styleUrl: './card-subject.css',
 })
 export class CardSubject {
+  @Input({ required: true }) course!: Course;
   @Output() editClick = new EventEmitter<void>();
 
   emitEdit(): void {
