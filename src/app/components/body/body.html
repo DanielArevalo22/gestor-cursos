@@ -2,40 +2,33 @@
   <div class="d-flex align-items-center justify-content-between mb-4">
     <div>
       <h2 class="fs-5 fw-semibold text-primary-emphasis mb-0">Cursos</h2>
-      <p class="text-muted mb-0" style="font-size: 0.82rem">Administración de cursos.</p>
+      <p class="text-muted mb-0 body-subtitle">Administración de cursos.</p>
     </div>
-    <button
-      class="btn btn-primary btn-sm px-3"
-      data-bs-target="#exampleModalToggle"
-      data-bs-toggle="modal"
-      id="create-subject"
-      type="button"
-      (click)="openCreateModal()"
-    >
+    <button class="btn btn-primary btn-sm px-3" type="button" (click)="openCreateModal()">
       <i class="fa-solid fa-plus me-1"></i> Crear curso
     </button>
   </div>
 
-  <div
-    class="modal fade"
-    id="exampleModalToggle"
-    tabindex="-1"
-    aria-hidden="true"
-    aria-labelledby="exampleModalToggleLabel"
-  >
+  <app-course-search (courseFound)="showOnlyFoundCourse($event)" (showAllCourses)="loadCourses()"></app-course-search>
+
+  <div class="modal fade" id="exampleModalToggle" tabindex="-1" aria-hidden="true"
+    aria-labelledby="exampleModalToggleLabel">
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content rounded-4 border-0 shadow">
         <div class="modal-body pt-2">
-          <app-form-create *ngIf="modalActivo === 'c'"></app-form-create>
-          <app-form-edit *ngIf="modalActivo === 'e'"></app-form-edit>
+          <app-form-create *ngIf="modalActivo === 'c'" (closeModal)="closeModal()"
+            (courseSaved)="onCourseSaved()"></app-form-create>
+          <app-form-edit *ngIf="modalActivo === 'e' && selectedCourse" [course]="selectedCourse"
+            (closeModal)="closeModal()" (courseSaved)="onCourseSaved()"></app-form-edit>
         </div>
       </div>
     </div>
   </div>
 
-  <div class="row row-cols-1 row-cols-md-2 row-cols-lg-2 g-3" id="subjects">
-    <div class="col" *ngFor="let course of courses()">
-      <app-card-subject [course]="course" (editClick)="openEditModal()"></app-card-subject>
+  <div class="row row-cols-1 row-cols-md-2 g-3">
+    <div class="col" *ngFor="let course of courses">
+      <app-card-subject [course]="course" (editClick)="openEditModal($event)"
+        (deleteClick)="deleteCourse($event)"></app-card-subject>
     </div>
   </div>
 </div>

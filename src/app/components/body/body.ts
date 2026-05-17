@@ -1,55 +1,106 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { NgFor, NgIf } from '@angular/common';
 import { CardSubject } from '../card-subject/card-subject';
 import { FormCreate } from '../form-create/form-create';
 import { FormEdit } from '../form-edit/form-edit';
-import { NgFor, NgIf } from '@angular/common';
+import { CourseSearch } from '../course-search/course-search';
 import Course from '../../models/Course';
 import { Courses } from '../../services/courses';
 
+declare const bootstrap: any;
+
 @Component({
   selector: 'app-body',
-  imports: [CardSubject, FormCreate, FormEdit, NgIf, NgFor],
+  imports: [CardSubject, FormCreate, FormEdit, CourseSearch, NgIf, NgFor],
   templateUrl: './body.html',
   styleUrl: './body.css',
 })
-export class Body {
+export class Body implements OnInit {
 
-  @ViewChild(CardSubject) cardSubject!: CardSubject;
-  
   modalActivo: 'c' | 'e' | null = null;
-  courses : Course[] = [];
+  courses: Course[] = [];
+  selectedCourse: Course | null = null;
 
-  constructor(private courService : Courses){
+  constructor(
+    private courService: Courses,
+    private cdr: ChangeDetectorRef
+  ) {}
 
+  ngOnInit(): void {
+    this.loadCourses();
   }
 
-  ngOnInit() : void{
+  loadCourses(): void {
     this.courService.findAllCoures().subscribe({
-      next: (course) =>{
-        this.courses = course;
+      next: (data) => {
+        this.courses = data;
         console.log(this.courses);
-      },
-      error: (err) =>{
-        console.log("ERROR OBTENIENDO APIS", err);
-      }
-    })
-  } 
 
-  ngAfterViewInit(): void {
-    this.cardSubject.editClick.subscribe(() => {
-      this.openEditModal();
+        // Esto obliga a Angular a refrescar la vista xq antes solo renderizaba cuando interactuaba con el input
+        this.cdr.detectChanges();
+      },
+      error: (err) => console.error('Error cargando cursos:', err),
     });
   }
 
-  openCreateModal() { 
-    this.modalActivo = 'c'; 
+  onCourseSaved(): void {
+    this.closeModal();
+    this.loadCourses();
   }
 
-  openEditModal() { 
-    this.modalActivo = 'e'; 
+  openCreateModal(): void {
+    this.selectedCourse = null;
+    this.modalActivo = 'c';
+    this.toggleModal(true);
   }
 
-  closeModal() { 
-    this.modalActivo = null; 
+  openEditModal(course: Course): void {
+    this.selectedCourse = course;
+    this.modalActivo = 'e';
+    this.toggleModal(true);
+  }
+
+  deleteCourse(course: Course): void {
+    const confirmar = confirm(`¿Está seguro de eliminar el curso "${course.name}"?`);
+  
+    if (!confirmar) return;
+  
+    this.courService.deleteCourse(course.idCo).subscribe({
+      next: (mensaje) => {
+        alert(mensaje);
+  
+        this.courses = this.courses.filter(c => c.idCo !== course.idCo);
+  
+        this.cdr.detectChanges();
+      },
+      error: (err) => {
+        console.error('Error eliminando curso:', err);
+  
+        if (err.status === 404) {
+          alert('NO SE ENCONTRO CURSO CON ESE ID');
+        } else {
+          alert('No se pudo eliminar el curso. Intente nuevamente.');
+        }
+      },
+    });
+  }
+
+  showOnlyFoundCourse(course: Course): void {
+    this.courses = [course];
+    this.cdr.detectChanges();
+  }
+
+  closeModal(): void {
+    this.modalActivo = null;
+    this.selectedCourse = null;
+    this.toggleModal(false);
+  }
+
+  private toggleModal(show: boolean): void {
+    const el = document.getElementById('exampleModalToggle');
+    if (!el) return;
+
+    const instance = bootstrap.Modal.getOrCreateInstance(el);
+    show ? instance.show() : instance.hide();
   }
 }
