@@ -33,4 +33,10 @@ export class Courses {
     return this.http.put<Course>(`${this.urlBaseApi}/${id}`, courObj);
   }
 
+  deleteCourse(id: number) {
+    return this.http.delete(`http://localhost:5072/api/course/${id}`, {
+      responseType: 'text'
+    });
+  }
+
 }
