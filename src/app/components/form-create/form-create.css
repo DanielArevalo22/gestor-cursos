@@ -1,0 +1,15 @@
+.form-wrapper {
+  max-width: 560px;
+}
+
+.form-card {
+  border-radius: 0.75rem;
+}
+
+.form-label-sm {
+  font-size: 0.875rem;
+}
+
+.form-message {
+  font-size: 0.82rem;
+}
