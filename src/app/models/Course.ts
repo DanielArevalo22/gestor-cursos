@@ -3,6 +3,6 @@ export default interface Course{
     name : string,
     teachName : string,
     slots : number,
-    takeSlots : number,
+    takenSlots : number,
     available : boolean
 }
