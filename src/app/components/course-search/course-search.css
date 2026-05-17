@@ -1,0 +1,15 @@
+.search-card {
+  border-radius: 0.6rem;
+}
+
+.search-field {
+  min-width: 200px;
+}
+
+.search-label {
+  font-size: 0.875rem;
+}
+
+.search-message {
+  font-size: 0.82rem;
+}

@@ -1,0 +1,45 @@
+<div class="card border-primary border-opacity-25 shadow-sm mb-4 search-card">
+  <div class="card-body px-4 py-3">
+    <div class="d-flex flex-wrap align-items-end gap-3">
+      <div class="flex-grow-1 search-field">
+        <label class="form-label fw-medium text-primary-emphasis mb-1 search-label">
+          Buscar curso por ID
+        </label>
+
+        <input
+          type="number"
+          class="form-control form-control-sm"
+          placeholder="Ej. 1"
+          min="1"
+          [(ngModel)]="searchId"
+        />
+      </div>
+
+      <div class="d-flex gap-2">
+        <button
+          type="button"
+          class="btn btn-primary btn-sm px-3"
+          (click)="search()"
+        >
+          <i class="fa-solid fa-magnifying-glass me-1"></i> Buscar
+        </button>
+
+        <button
+          type="button"
+          class="btn btn-outline-primary btn-sm px-3"
+          (click)="viewCourses()"
+        >
+          <i class="fa-solid fa-list me-1"></i> Ver cursos
+        </button>
+      </div>
+    </div>
+
+    <p *ngIf="searchError" class="text-danger mb-0 mt-2 search-message">
+      {{ searchError }}
+    </p>
+
+    <p *ngIf="foundMessage" class="text-success mb-0 mt-2 search-message">
+      {{ foundMessage }}
+    </p>
+  </div>
+</div>
